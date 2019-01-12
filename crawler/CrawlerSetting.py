@@ -44,14 +44,18 @@ def get_random_ip():
     return random.choice(ip_list)
 
 
-def init_driver(driver_path=r'C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe'):
+def init_driver(
+        driver_path=r'C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe',
+        UserAgent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.80 Safari/537.36"):
     """
     :param driver_path: 浏览器路径
+    :param UserAgent: 请求头
     :return: 浏览器对象
     """
     # 初始化无头浏览器，添加随机代理IP
     chrome_options = Options()
     chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--user-agent={}".format(UserAgent))
     if is_proxy:
         chrome_options.add_argument("--proxy-server={}".format(get_random_ip()))
     chrome_driver = webdriver.Chrome(executable_path=driver_path,
