@@ -126,7 +126,7 @@ class image:
     def POST(self):
         user_data = web.input()
         print user_data.keys()
-        if (len(user_data['myfile'])>0):
+        if len(user_data['myfile'])>0:
             image_inputs = web.input(myfile={})
             filename = image_inputs.myfile.filename
             k=filename.split('.')
@@ -141,7 +141,7 @@ class image:
             else :
                 return render.formtest()
 
-        if (len(user_data['search_content']) > 0):
+        if len(user_data['search_content']) > 0:
             user_data = web.input(search_content=None)
             term = str(user_data.search_content)
             if not term:
