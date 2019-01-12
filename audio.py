@@ -1,35 +1,36 @@
 from scipy.io import wavfile
+from scipy.ndimage import maximum_filter
 import librosa
 import numpy as np
 import os
 import pickle
-import hashlib
-from scipy.fftpack import fft
-from scipy.ndimage import maximum_filter
-
+import sys
 
 def load_wavfile(path):
+    """读取wav文件"""
     sr, wav = wavfile.read(path)
     bits = wav.itemsize * 8
-    wav = wav/(2 ** (bits - 1))
+    wav = wav/(2 ** (bits - 1))  # 将int转化为float，即压缩到[0, 1)
     if wav.ndim == 2:
-        wav = np.mean(wav, axis=-1)
+        wav = np.mean(wav, axis=-1)  # 双声道转化为单声道
     return wav
 
 
-def get_peaks(y):
-    """Input: 2D array.
-       Output: 2D boolean array with the same shape."""
+def get_peaks(y, threshold=10):
+    """找出y中的峰值点坐标
+    y: 2D array.
+    threshold: 过滤幅值过小的峰值点的阈值
+    Returns: List containing (freq_id, time_id)."""
     maximum = maximum_filter(y, size=10) == y
     freq_id, time_id = np.nonzero(maximum)
     amps = y[maximum].reshape(-1)
     peaks = zip(freq_id, time_id, amps)
-    peaks = [x for x in peaks if x[2] > 10]
+    peaks = [(x[0], x[1]) for x in peaks if x[2] > threshold]
     return peaks
 
 
-def get_hashes(peaks):
-    hashes = []
+def get_features(peaks):
+    features = []
     for i in range(len(peaks)):
         for j in range(1, 16):
             if i + j < len(peaks):
@@ -41,27 +42,30 @@ def get_hashes(peaks):
 
                 if t_delta >= 0 and t_delta <= 200:
                     h = (freq1, freq2, t_delta)
-                    hashes.append((h, t1))
-    return hashes
+                    features.append((h, t1))
+    return features
 
 
-def fingerprints(wav):
+def get_fingerprints(wav):
+    """从wav数据中提取特征"""
     spec = np.abs(librosa.stft(wav))
     peaks = get_peaks(spec)
-    return get_hashes(peaks)
+    return get_features(peaks)
 
 
-def create_index():
-    path = "C:\\Users\\ihone\\OneDrive\\桌面\\111"
-    filenames = os.listdir(path)
-    i=1
+def create_index(dir_path):
+    """预处理数据库中的数据，创建索引并保存在文件中
+    dir: 存放音乐数据的文件夹路径，里面放置wav文件
+    """
+    filenames = os.listdir(dir_path)
+    i = 1
     hashtable = {}
     for filename in filenames:
-        filepath = os.path.join(path, filename)
-        print(i,filename)
-        i+=1
+        filepath = os.path.join(dir_path, filename)
+        print "processing {} {}".format(i, filename)
+        i += 1
         wav = load_wavfile(filepath)
-        fps = fingerprints(wav)
+        fps = get_fingerprints(wav)
         for fp in fps:
             t = fp[1]
             fp = fp[0]
@@ -74,7 +78,9 @@ def create_index():
         pickle.dump(hashtable, f)
 
 
-def search(fingerprints, hashtable):
+def search(wav, hashtable):
+    """搜索目标wav数据，返回5条（歌曲，时间差）的最佳匹配"""
+    fingerprints = get_fingerprints(wav)
     res = {}
     for fp in fingerprints:
         t = fp[1]
@@ -91,29 +97,8 @@ def search(fingerprints, hashtable):
     return sorted(res.items(), key=lambda x: x[1], reverse=True)[:5]
 
 
-a = load_wavfile('Deja Vu.wav')
-df = fingerprints(a)
-aa = load_wavfile('ha.wav')
-ff = fingerprints(aa)
-aaa = load_wavfile('1 (1).wav')
-fff = fingerprints(aaa)
-print(len(df))
-print(len(ff))
-print(len(fff))
+if __name__ == '__main__':
+    dir_path = sys.argv[1]
+    create_index(dir_path)
 
-# create_index()
-with open('Index.pkl', 'rb') as f:
-    hashtable = pickle.load(f)
-for fp in df:
-    t=fp[1]
-    fp=fp[0]
-    if fp not in hashtable:
-        hashtable[fp] = [('djv',t)]
-    else:
-        hashtable[fp].append(('djv',t))
 
-print(search(fff, hashtable))
-print(search(ff,hashtable))
-aaaa = load_wavfile('subdjv.wav')
-ffff= fingerprints(aaaa)
-print(search(ffff,hashtable))
