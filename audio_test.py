@@ -1,7 +1,6 @@
 from audio import *
 
-with open('Index.pkl', 'rb') as f:
+with open('./static/audio_index.pkl', 'rb') as f:
     hashtable = pickle.load(f)
 
-a = load_wavfile('en.wav')
-print search(a)
+print search_audio('en.wav', hashtable)

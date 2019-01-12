@@ -2,6 +2,7 @@
 import web,os,pickle as pk
 from SearchFiles import search
 from SearchPics import Search_img
+from audio import search_audio
 
 f = open("./static/img_des.pkl", "rb")
 img_data = pk.load(f)
@@ -18,6 +19,9 @@ f.close()
 f=open("./static/artist_information.pkl","rb")
 artist_information= pk.load(f)
 f.close()
+f=open('./static/audio_index.pkl', 'rb')
+audio_index= pk.load(f)
+f.close()
 
 urls = (
     '/', 'index',
@@ -25,6 +29,7 @@ urls = (
     '/s_song', 'song',
     '/s_art','artist',
     '/s_alb','album',
+    '/s_ly','lyrics',
     '/i', 'image',
 '/test1', 'test1',
 '/test2','test2'
@@ -39,9 +44,12 @@ class test2:
         user_data=web.input()
         filename=str(user_data['img_name'])
         filepath = './static/Query/' + (filename.replace('\\', '/'))
-        filepath, target, num = Search_img(filepath, img_data, album_data)
-
-        return render.result_img(filepath, target, num)
+        if 'jpg' in filepath:
+            filepath, target, num = Search_img(filepath, img_data, album_data)
+            return render.result_img(filepath, target, num)
+        if 'wav' in filepath:
+            print filepath
+            return render.formtest2(filepath)
 
 
 class test1:
@@ -50,16 +58,13 @@ class test1:
         user_data=web.input()
         image_inputs = web.input(imgup={})
         filename = str(image_inputs.imgup.filename)
-
         k = filename.split('.')
-
-        if 'jpg' in k:
+        if 'jpg' or 'wav' in k:
             filepath = './static/Query/' + (filename.replace('\\', '/'))  # 问题：文件名中存在路径分隔符？
 
-            fout = open(filepath, 'wb')
-
-            fout.write(image_inputs.imgup.value)
-            fout.close()
+            #fout = open(filepath, 'wb')
+            #fout.write(image_inputs.imgup.value)
+            #fout.close()
 
 
 class index:
@@ -94,10 +99,33 @@ class song:
         for i in range(len(contents)):
             contents[i].append("./static/Music/"+str(contents[i][0])+".mp3")
 
-            lyrics = contents[i][8].split('\n')
+            lyrics = contents[i][7].split('\n')
+            print lyrics
             lyrics = filter(isspace, lyrics)
-            contents[i][8] = lyrics
+            print lyrics
+            contents[i][7] = lyrics
+            print contents[i]
         return render.music(term, contents, num)
+
+
+class lyrics:
+    def GET(self):
+        user_data = web.input(search_content=None)
+        term = user_data.search_content
+        root = "lyrics"
+        if not term:
+            return render.formtest()
+        contents, num = search(root,term)
+
+        for i in range(len(contents)):
+            contents[i].append("./static/Music/"+str(contents[i][0])+".mp3")
+            lyrics = contents[i][7].split('\n')
+            print lyrics
+            lyrics = filter(isspace, lyrics)
+            print lyrics
+            contents[i][7] = lyrics
+            print contents[i]
+        return render.lyrics(term, contents, num)
 
 
 class artist:
@@ -138,9 +166,14 @@ class image:
                 fout.close()
                 filepath,target,num=Search_img(filepath,img_data,album_data)
                 return render.result_img(filepath,target,num)
-            else :
-                return render.formtest()
-
+            if 'wav' in k:
+                filepath = './static/Query/' + (filename.replace('\\', '/'))  # 问题：文件名中存在路径分隔符？
+                print filepath
+                #fout = open(filepath, 'wb')
+                #fout.write(image_inputs.myfile.value)
+                #fout.close()
+                target = search_audio(filepath, audio_index)[0][0]
+                return render.formtest2(filepath,target)
         if len(user_data['search_content']) > 0:
             user_data = web.input(search_content=None)
             term = str(user_data.search_content)
@@ -162,9 +195,11 @@ class image:
                     contents, num = search(root, term)
                     for i in range(len(contents)):
                         contents[i].append("./static/Music/" + str(contents[i][0]) + ".mp3")
-                        lyrics = contents[i][8].split('\n')
+                        lyrics = contents[i][7].split('\n')
+                        print lyrics
                         lyrics=filter(isspace,lyrics)
-                        contents[i][8] = lyrics
+                        print lyrics
+                        contents[i][7] = lyrics
                     return render.music(term, contents, num)
 
 

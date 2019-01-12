@@ -74,12 +74,13 @@ def create_index(dir_path):
             else:
                 hashtable[fp].append((filename, t))
 
-    with open('Index.pkl', 'wb') as f:
+    with open('./static/audio_index.pkl', 'wb') as f:
         pickle.dump(hashtable, f)
 
 
-def search(wav, hashtable):
-    """搜索目标wav数据，返回5条（歌曲，时间差）的最佳匹配"""
+def search_audio(path, hashtable):
+    """搜索目标文件，返回5条（歌曲，时间差）的最佳匹配"""
+    wav = load_wavfile(path)
     fingerprints = get_fingerprints(wav)
     res = {}
     for fp in fingerprints:
