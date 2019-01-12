@@ -1,4 +1,4 @@
-$def with(filepath)
+$def with(filepath, target)
 <title>Dejavu</title>
 <meta charset="utf-8">
 <style>
@@ -144,7 +144,7 @@ $def with(filepath)
     <audio src="$filepath"  style="width:310px;float:left;margin-left:15;margin-top:5;margin-bottom:20;" controls="controls">
                         你的浏览器不支持播放音乐，建议使用谷歌浏览器
                     </audio>
-    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="https://music.163.com/outchain/player?type=2&id=27625424&auto=1&height=66"></iframe>
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="https://music.163.com/outchain/player?type=2&id=$target&auto=1&height=66"></iframe>
     </div>
 </main>
 

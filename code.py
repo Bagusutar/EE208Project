@@ -161,6 +161,7 @@ class image:
                 #fout.write(image_inputs.myfile.value)
                 #fout.close()
                 target = search_audio(filepath, audio_index)[0][0]
+                target = target.split('.')[0]
                 return render.formtest2(filepath,target)
         if len(user_data['search_content']) > 0:
             user_data = web.input(search_content=None)
