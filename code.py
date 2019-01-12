@@ -161,9 +161,9 @@ class image:
             print k
             if 'jpg' in k :
                 filepath ='./static/Query/'+(filename.replace('\\', '/'))  # 问题：文件名中存在路径分隔符？
-                fout = open(filepath, 'wb')
-                fout.write(image_inputs.myfile.value)
-                fout.close()
+                #fout = open(filepath, 'wb')
+                #fout.write(image_inputs.myfile.value)
+                #fout.close()
                 filepath,target,num=Search_img(filepath,img_data,album_data)
                 return render.result_img(filepath,target,num)
             if 'wav' in k:
