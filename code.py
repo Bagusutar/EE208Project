@@ -40,7 +40,6 @@ render = web.template.render('templates')
 
 class test2:
     def GET(self):
-        print 5
         user_data=web.input()
         filename=str(user_data['img_name'])
         filepath = './static/Query/' + (filename.replace('\\', '/'))
@@ -48,13 +47,11 @@ class test2:
             filepath, target, num = Search_img(filepath, img_data, album_data)
             return render.result_img(filepath, target, num)
         if 'wav' in filepath:
-            print filepath
             return render.formtest2(filepath)
 
 
 class test1:
     def POST(self):
-        print 6
         user_data=web.input()
         image_inputs = web.input(imgup={})
         filename = str(image_inputs.imgup.filename)
@@ -100,11 +97,8 @@ class song:
             contents[i].append("./static/Music/"+str(contents[i][0])+".mp3")
 
             lyrics = contents[i][7].split('\n')
-            print lyrics
             lyrics = filter(isspace, lyrics)
-            print lyrics
             contents[i][7] = lyrics
-            print contents[i]
         return render.music(term, contents, num)
 
 
@@ -120,11 +114,8 @@ class lyrics:
         for i in range(len(contents)):
             contents[i].append("./static/Music/"+str(contents[i][0])+".mp3")
             lyrics = contents[i][7].split('\n')
-            print lyrics
             lyrics = filter(isspace, lyrics)
-            print lyrics
             contents[i][7] = lyrics
-            print contents[i]
         return render.lyrics(term, contents, num)
 
 
@@ -153,12 +144,10 @@ class album:
 class image:
     def POST(self):
         user_data = web.input()
-        print user_data.keys()
         if len(user_data['myfile'])>0:
             image_inputs = web.input(myfile={})
             filename = image_inputs.myfile.filename
             k=filename.split('.')
-            print k
             if 'jpg' in k :
                 filepath ='./static/Query/'+(filename.replace('\\', '/'))  # 问题：文件名中存在路径分隔符？
                 #fout = open(filepath, 'wb')
@@ -168,11 +157,11 @@ class image:
                 return render.result_img(filepath,target,num)
             if 'wav' in k:
                 filepath = './static/Query/' + (filename.replace('\\', '/'))  # 问题：文件名中存在路径分隔符？
-                print filepath
                 #fout = open(filepath, 'wb')
                 #fout.write(image_inputs.myfile.value)
                 #fout.close()
                 target = search_audio(filepath, audio_index)[0][0]
+                target = target.split('.')[0]
                 return render.formtest2(filepath,target)
         if len(user_data['search_content']) > 0:
             user_data = web.input(search_content=None)
@@ -182,11 +171,9 @@ class image:
             if term in artist_information:
                 root = "artist"
                 contents, num = search(root, term)
-                print "artist_information" + "  " + term
                 return render.artist(term, contents, num)
             else:
                 if term in album_information:
-                    print "album_information" + "  " + term
                     root = 'album'
                     contents, num = search(root, term)
                     return render.album(term, contents, num)
@@ -196,9 +183,7 @@ class image:
                     for i in range(len(contents)):
                         contents[i].append("./static/Music/" + str(contents[i][0]) + ".mp3")
                         lyrics = contents[i][7].split('\n')
-                        print lyrics
                         lyrics=filter(isspace,lyrics)
-                        print lyrics
                         contents[i][7] = lyrics
                     return render.music(term, contents, num)
 

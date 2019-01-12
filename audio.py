@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from scipy.io import wavfile
 from scipy.ndimage import maximum_filter
 import librosa
