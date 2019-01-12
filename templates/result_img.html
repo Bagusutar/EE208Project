@@ -1,0 +1,169 @@
+$def with (term, contents,num)
+<html>
+    <head>
+        <meta name="referrer" content="no-referrer">
+        <title>图片搜索"</title>
+        <style>
+            p{font-size:25px;line-height:5px;letter-spacing:-4px;}
+            p .g1{color:#1065e6;font-size:30px;font-family:Arial;}
+            p .o1{color:#df432e;}
+            p .o2{color:#ffb709;}
+            p .g2{color:#166df1;}
+            p .l{color:#03a25d;font-size:27px;}
+            p .e{color:#d64632;}
+            div{outline:none}
+            div .d0{position:fixed;margin-left:-9;margin-top:-9;height:58;width:110%;
+                min-width:1150;background:white;box-shadow:grey 0px 0px 3px 0px;z-index:999;padding-left:25%;}
+            div .d1{float:left;margin-left:10;height:60}
+            div .d2{float:left;margin-left:12;margin-top:12}
+            .d3{margin-top:-10;margin-left:-8;margin-right:-8;padding-left:108px;height:40;min-width:1150;font-size:18;background:#f8f8f8}
+            .d4{padding-left:15px;padding-right:15px;padding-top:7px;height:30;float:left;border-bottom:3px solid #3388ff;}
+            .d5{padding-left:15px;padding-right:15px;padding-top:7px;height:30;float:left;color:grey;}
+            input{outline:none;}
+            #txt{padding-left:8px;width:440;height:35;border:1px solid #cccccc;}
+            #txt:hover{border:1px solid #999;}
+            #txt:focus{border:1px solid #3388ff;}
+            #sub{margin-left:-6;width:90;color:white;cursor:pointer;height:35;
+                border:1px solid #3388ff;background:#3388ff}
+            #sub:hover{border:1px solid #3388ff;background:#317ef3;}
+            #sub:active{background:#3075dc;}
+            a{TEXT-DECORATION:none;outline: none;}
+            a:hover{TEXT-DECORATION:underline}
+            #h{height:100%;width:100%;}
+            #h .hi{background:url(//img2.bdstatic.com/static/searchresult/widget/ui/controls/hoverBox/img/shadow_c288912.png) repeat-x;}
+            .hw{position:relative;overflow:hidden;}
+            .hi{position:absolute;left:0px;bottom:-50;width:100%;height:50px;
+            -moz-transition:bottom ease 200ms;
+            -o-transition:bottom ease 200ms;
+            -webkit-transition:bottom ease 200ms;
+            transition:bottom ease 200ms;}
+            .hw:hover .hi{bottom:0;}
+        </style>
+          <script type="text/javascript">
+    window.onload=function(){
+        var div1=document.getElementById("logo");
+
+        div1.ondragenter=function(){
+            ev.preventDefault();
+            // this.innerHTML="将图片拖拽到此区域";
+        }
+        div1.ondragleave=function(){
+            ev.preventDefault();
+            //this.innerHTML="out";
+        }
+        div1.ondragover=function(ev){
+            ev.preventDefault();
+        }
+        div1.ondrop=function(ev)
+        {
+            ev.preventDefault();
+            var img = ev.dataTransfer.files[0];
+
+            var formData = new FormData();
+            formData.append("imgup", img);
+
+            var xhr = null;
+            if (XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xhr.open("post", "/test1", true);//设置提交方式，url，异步提交
+            xhr.onload = function () {
+                var data = xhr.responseText;    //得到返回值
+                location.href='/test2?'+'img_name='+img.name
+            }
+            xhr.send(formData);
+        }
+    }
+</script>
+    </head>
+    <body style="font-family:Sans-Serif;">
+
+        <div style="height:60;">
+            <div class="d0">
+                <div class="d1" id="logo">
+                    <p>
+                        <a href="/" style="outline:none;text-decoration:none" title="回到图片搜索首页">
+                           <span class="g1">D</span>
+                    <span class="o1">e</span>
+                    <span  class="o2">j</span>
+                    <span  class="g2">a</span>
+                    <span  class="l">v</span>
+                    <span  class="e">u</span>
+                        </a>
+                    </p>
+                </div>
+                <div class="d2">
+                    <form action="/i" method="post" enctype="multipart/form-data" id="myForm"  style="width:1000;font-family:Sans-Serif;font-size:15">
+                         <input type="text" id="txt" name="search_content"/>
+                        <input type="file" name="myfile" value="上传" />
+                        <input type="submit" id="sub" value="搜索"/>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div align="center">
+
+        <img src="$term" style="height:320">
+            $if contents:
+
+                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=320 src="https://music.163.com/outchain/player?type=1&id=$contents[0][0][15:-4]&auto=1&height=288"></iframe>
+        </div>
+
+        <div style="min-width:1000;margin-left:15;margin-right:10">
+            <div style="margin-top:15;font-size:14;color:#999;">
+
+                    百度为您找到相关结果约$num个
+            </div>
+        </div>
+        <div style="width:100%;min-width:1050;">
+        $if contents:
+            <div style="overflow:auto">
+
+            $for content in contents:
+                <div style="float:left;height:288;padding:20">
+                    <div id="h" class="hw" title="专辑： $content[2]$'\n'歌手：$content[4]">
+                        <div>
+                            <a href="$content[3]" style="outline:none;text-decoration:none">
+                                <img src="$content[0]" style="height:288">
+                            </a>
+                        </div>
+                        <div class = "hi">
+                            <div style="padding:15 15 0 15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color: rgb(255, 255, 255);
+                                        text-shadow: rgb(0, 0, 0) 1px 1px;">
+                                <a href="$content[3]" style="height: 36px;
+                                        font-size: 15px;
+                                        line-height: 20px;
+                                        font-family: 宋体, Arial;
+                                        color: rgb(255, 255, 255);
+                                        text-shadow: rgb(0, 0, 0) 1px 1px;
+                                        margin: 8px 12px;
+                                        margin-top: 8px;
+                                        margin-right: 12px;
+                                        margin-bottom: 8px;
+                                        margin-left: 12px;
+                                        "
+                                >$content[2]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        $else:
+            $if term:
+                <div style="font-size:25;margin-top:60;font-weight:320">很抱歉，没有找到与“<span
+                        style="color:red"><img src="$term" style="height:288"></span
+                >”相关的图片。
+                </div>
+        </div>
+
+
+    </body>
+</html>
+
+
+

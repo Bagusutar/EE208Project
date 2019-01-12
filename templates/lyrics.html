@@ -1,0 +1,221 @@
+$def with (term, contents, num)
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>$term$"_单曲搜索"</title>
+        <style>
+            p{font-size:25px;line-height:5px;letter-spacing:-4px;}
+            p .g1{color:#1065e6;font-size:30px;font-family:Arial;}
+            p .o1{color:#df432e;}
+            p .o2{color:#ffb709;}
+            p .g2{color:#166df1;}
+            p .l{color:#03a25d;font-size:27px;}
+            p .e{color:#d64632;}
+            div{outline:none}
+            div .d0{position:fixed;margin-left:-9;margin-top:-9;height:58;width:110%;
+                min-width:1150;background:white;box-shadow:grey 0px 0px 3px 0px;padding-left:25%;
+                }
+            div .d1{float:left;margin-left:10;height:60}
+            div .d2{float:left;margin-left:12;margin-top:12}
+            .d3{margin-top:-10;margin-left:-8;margin-right:-8;padding-left:25%;height:40;min-width:1150;font-size:18;background:#f8f8f8;}
+            .d4
+            {
+                padding-left:7%;
+                padding-right:7%;
+                padding-top:7px;
+                height:30;
+                float:left;
+                border-bottom:2px solid #3388ff;
+                box-shadow: 0px 0px 10px gray inset;
+                white-space:nowrap;
+            }
+            .d5
+            {
+                padding-left:7%;
+                padding-right:7%;
+                padding-top:7px;
+                height:30;
+                float:left;
+                color:grey;
+                box-shadow: 0px 0px 3px gray inset;
+                white-space:nowrap;
+            }
+            input{outline:none;}
+            #txt{padding-left:8px;width:440;height:35;border:1px solid #cccccc;}
+            #txt:hover{border:1px solid #999;}
+            #txt:focus{border:1px solid #3388ff;}
+            #sub{margin-left:-6;width:90;color:white;cursor:pointer;height:35;
+                border:1px solid #3388ff;background:#3388ff}
+            #sub:hover{border:1px solid #3388ff;background:#317ef3;}
+            #sub:active{background:#3075dc;}
+
+             div .show
+            {
+                float:left;
+                padding:20 20 20 20;
+                height:830px;
+                width:360px;
+                margin-left:20;
+                margin-top:15;
+                backgound:#FFF;
+                box-shadow: darkgrey 10px 10px 10px 5px ;
+                border-radius:10px;
+            }
+
+            div .pic
+            {
+                web/web/templates/album.html:65
+                backgound:#FFF;
+                margin-top:15px;
+                margin-left:20px;
+                height:320px;
+                width:320px;
+            }
+            div .info
+            {
+                overflow:hidden;
+                height:64;
+                float:center;
+                margin-top:5;
+                text-align:center;
+                padding:3 3 3 3;
+            }
+            div .artist
+            {
+                overflow:hidden;
+                height:40;
+                float:center;
+                text-align:center;
+                padding:3 3 3 3;
+            }
+            div .lyrics
+            {
+                overflow:auto;
+                width:330;
+                height:285;
+                text-align:center;
+                margin-top:15px;
+                margin-left:15px;
+            }
+
+
+
+        </style>
+          <script type="text/javascript">
+    window.onload=function(){
+        var div1=document.getElementById("logo");
+
+        div1.ondragenter=function(){
+            ev.preventDefault();
+            // this.innerHTML="将图片拖拽到此区域";
+        }
+        div1.ondragleave=function(){
+            ev.preventDefault();
+            //this.innerHTML="out";
+        }
+        div1.ondragover=function(ev){
+            ev.preventDefault();
+        }
+        div1.ondrop=function(ev)
+        {
+            ev.preventDefault();
+            var img = ev.dataTransfer.files[0];
+
+            var formData = new FormData();
+            formData.append("imgup", img);
+
+            var xhr = null;
+            if (XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xhr.open("post", "/test1", true);//设置提交方式，url，异步提交
+            xhr.onload = function () {
+                var data = xhr.responseText;    //得到返回值
+                location.href='/test2?'+'img_name='+img.name
+            }
+            xhr.send(formData);
+        }
+    }
+</script>
+    </head>
+    <body style="font-family:Sans-Serif;">
+        <div style="height:60;">
+            <div class="d0">
+                <div class="d1" id="logo">
+                    <p>
+                        <a href="/" style="outline:none;text-decoration:none" title="回到首页">
+                            <span class="g1">D</span>
+                    <span class="o1">e</span>
+                    <span  class="o2">j</span>
+                    <span  class="g2">a</span>
+                    <span  class="l">v</span>
+                    <span  class="e">u</span>
+
+                        </a>
+                    </p>
+                </div>
+                <div class="d2">
+                   <form action="/i" method="post" enctype="multipart/form-data" id="myForm"  style="width:1000;font-family:Sans-Serif;font-size:15">
+                        <input type="text" id="txt" name="search_content" value="$term"/>
+                        <input type="file" name="myfile" value="上传" />
+                        <input type="submit" id="sub" value="搜索"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="d3">
+            <a href="/s_song?search_content=$term&root=music" style="outline:none;text-decoration:none" >
+            <div class="d5">单曲</div>
+            </a>
+            <a href="/s_art?search_content=$term&root=artist" style="outline:none;text-decoration:none" >
+                <div class="d5">歌手</div>
+            </a>
+            <a href="/s_alb?search_content=$term&root=album" style="outline:none;text-decoration:none" >
+                <div class="d5">专辑</div>
+            </a>
+
+                <div class="d4">歌词</div>
+
+        </div>
+        <div style="min-width:1000;margin-left:50;margin-right:50">
+            <div style="margin-top:15;font-size:14;color:#999;">为您找到相关结果约$num个</div>
+        $if contents:
+            <div style="overflow:auto;padding:10 10 10 10;">
+            $for content in contents:
+                <div class="show">
+                    <div class="pic">
+                        <a href="https://music.163.com/#/song?id=$content[0]"><img alt="$content[1]" src="$content[6]" height="100%" width="100%"/></a>
+                    </div>
+
+                    <div class="info">
+                        <h3><a href="https://music.163.com/#/song?id=$content[0]">$content[1]</a></h3>
+                    </div>
+
+                    <div class="artist">
+                        歌手：<a href="$content[4]">$content[5]</a><br>
+                        专辑：<a href="$content[2]">$content[3]</a>
+                    </div>
+
+                  <audio src="$content[8]"  style="width:310px;float:left;margin-left:15;margin-top:5;margin-bottom:20;" controls="controls">
+                        你的浏览器不支持播放音乐，建议使用谷歌浏览器
+                    </audio>
+                    <div class="lyrics">
+                    $for contentt in content[7]:
+                        $:contentt
+                        <br>
+                    </div>
+                </div>
+            </div>
+        $else:
+            $if term:
+                <div style="font-size:25;margin-top:60;font-weight:320">很抱歉，没有找到与“<span
+                        style="color:red">$term</span
+                >”相关的单曲。
+                </div>
+        </div>
+
+
+    </body>
+</html>
