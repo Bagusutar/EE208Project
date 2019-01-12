@@ -195,9 +195,8 @@ $def with (term, contents, num)
                         专辑：<a href="$content[2]">$content[3]</a>
                     </div>
 
-                  <audio src="$content[8]"  style="width:310px;float:left;margin-left:15;margin-top:5;margin-bottom:20;" controls="controls">
-                        你的浏览器不支持播放音乐，建议使用谷歌浏览器
-                    </audio>
+                    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=$content[0]&auto=1&height=66"></iframe>
+
                     <div class="lyrics">
                     $for contentt in content[7]:
                         $:contentt
