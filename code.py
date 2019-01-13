@@ -33,12 +33,14 @@ urls = (
     '/i', 'image',
 '/test1', 'test1',
 '/test2','test2'
+    '/test1', 'drag',
+    '/test2','drag_search'
 )
 
 render = web.template.render('templates')
 
 
-class test2:
+class drag_search:
     def GET(self):
         user_data=web.input()
         filename=str(user_data['img_name'])
@@ -50,7 +52,7 @@ class test2:
             return render.formtest2(filepath)
 
 
-class test1:
+class drag:
     def POST(self):
         user_data=web.input()
         image_inputs = web.input(imgup={})
@@ -58,11 +60,9 @@ class test1:
         k = filename.split('.')
         if 'jpg' or 'wav' in k:
             filepath = './static/Query/' + (filename.replace('\\', '/'))  # 问题：文件名中存在路径分隔符？
-
-            #fout = open(filepath, 'wb')
-            #fout.write(image_inputs.imgup.value)
-            #fout.close()
-
+            fout = open(filepath, 'wb')
+            fout.write(image_inputs.imgup.value)
+            fout.close()
 
 class index:
     def GET(self):
@@ -95,7 +95,6 @@ class song:
 
         for i in range(len(contents)):
             contents[i].append("./static/Music/"+str(contents[i][0])+".mp3")
-
             lyrics = contents[i][7].split('\n')
             lyrics = filter(isspace, lyrics)
             contents[i][7] = lyrics
@@ -150,20 +149,23 @@ class image:
             k=filename.split('.')
             if 'jpg' in k :
                 filepath ='./static/Query/'+(filename.replace('\\', '/'))  # 问题：文件名中存在路径分隔符？
-                #fout = open(filepath, 'wb')
-                #fout.write(image_inputs.myfile.value)
-                #fout.close()
+                fout = open(filepath, 'wb')
+                fout.write(image_inputs.myfile.value)
+                fout.close()
                 filepath,target,num=Search_img(filepath,img_data,album_data)
                 return render.result_img(filepath,target,num)
             if 'wav' in k:
                 filepath = './static/Query/' + (filename.replace('\\', '/'))  # 问题：文件名中存在路径分隔符？
-                #fout = open(filepath, 'wb')
-                #fout.write(image_inputs.myfile.value)
-                #fout.close()
                 target = search_audio(filepath, audio_index)[0][0]
                 target = target.split('.')[0]
                 return render.formtest2(filepath,target)
         if len(user_data['search_content']) > 0:
+                fout = open(filepath, 'wb')
+                fout.write(image_inputs.myfile.value)
+                fout.close()
+
+
+        if (len(user_data['search_content']) > 0):
             user_data = web.input(search_content=None)
             term = str(user_data.search_content)
             if not term:
