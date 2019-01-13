@@ -33,7 +33,7 @@ def get_peaks(y, threshold=10):
 def get_features(peaks):
     features = []
     for i in range(len(peaks)):
-        for j in range(1, 16):
+        for j in range(1, 6):
             if i + j < len(peaks):
                 freq1 = peaks[i][0]
                 freq2 = peaks[i + j][0]
