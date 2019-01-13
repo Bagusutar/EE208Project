@@ -46,10 +46,12 @@ class drag_search:
         if 'jpg' in filepath: #上传的是图片
             filepath, target, num = Search_img(filepath, img_data, album_data) #以图搜图
             return render.result_img(filepath, target, num) #返回结果页面
-        if 'wav' in filepath: #上传的是音乐
+        elif 'wav' in filepath: #上传的是音乐
             target = search_audio(filepath, audio_index)[0][0][0] #听歌识曲
             target = target.split('.')[0]
             return render.formtest2(filepath, target) #返回结果页面
+        else:
+            return render.formtest()
 
 
 class drag:
@@ -63,6 +65,7 @@ class drag:
             fout = open(filepath, 'wb') #写入
             fout.write(image_inputs.imgup.value)
             fout.close()
+
 
 
 class index:
@@ -164,7 +167,7 @@ class image:
                 target = target.split('.')[0]
                 return render.formtest2(filepath,target)
 
-        if (len(user_data['search_content']) > 0): #如果上传的是文本
+        elif (len(user_data['search_content']) > 0): #如果上传的是文本
             user_data = web.input(search_content=None)
             term = str(user_data.search_content)
             if not term:
@@ -187,7 +190,8 @@ class image:
                         lyrics=filter(isspace,lyrics)
                         contents[i][7] = lyrics
                     return render.music(term, contents, num)
-
+        else:
+            return render.formtest()
 
 def isspace(x):
     return x.isspace()==False and x!='' #过滤空格和空字符
