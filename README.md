@@ -5,6 +5,8 @@
 
 实验环境：Ubuntu 16.06, Python 2.7
 
-需要的库：web.py, scipy, numpy, librosa, opencv
+需要的库：web.py, scipy, numpy, lucene, jieba, librosa, opencv
+
+爬虫用到的库：selenium
 
 运行code.py打开网页即可。详细说明请见report。
