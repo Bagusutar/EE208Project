@@ -31,8 +31,6 @@ urls = (
     '/s_alb','album',
     '/s_ly','lyrics',
     '/i', 'image',
-'/test1', 'test1',
-'/test2','test2'
     '/test1', 'drag',
     '/test2','drag_search'
 )
@@ -49,7 +47,9 @@ class drag_search:
             filepath, target, num = Search_img(filepath, img_data, album_data)
             return render.result_img(filepath, target, num)
         if 'wav' in filepath:
-            return render.formtest2(filepath)
+            target = search_audio(filepath, audio_index)[0][0][0]
+            target = target.split('.')[0]
+            return render.formtest2(filepath, target)
 
 
 class drag:
