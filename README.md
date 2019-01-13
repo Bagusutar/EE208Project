@@ -9,4 +9,4 @@
 
 爬虫用到的库：selenium
 
-运行code.py打开网页即可。详细说明请见report。
+运行code.py打开网页即可（最好使用chrome浏览器，否则主页背景可能无法加载）。详细说明请见report。
