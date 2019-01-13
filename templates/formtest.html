@@ -1,8 +1,8 @@
-$def with()
+﻿$def with()
 <title>Dejavu</title>
 <meta charset="utf-8">
 <style>
-    p{line-height:0px;font-size:70px;letter-spacing:-4px;font-family:Sans-Serif;}
+    p{line-height:0px;font-size:70px;letter-spacing:-10px;font-family:Sans-Serif;}
     p .g1{font-family:Arial;font-size:85px;color:#1065e6; z-index: 1;}
     p .o1{color:#df432e; z-index: 1;}
     p .o2{color:#ffb709; z-index: 1;}
@@ -112,9 +112,9 @@ $def with()
         <div class="shadow-bottom"></div>
         <div class="shadow-top"></div>
 
-        <div style="width: 80%;height: 70%;left: 100px;top:100px;position: absolute;">
+        <div style="height: 70%;left: 100px;margin-top:300px;">
             <div align="center">
-                <div id='logo' style="width:78%;">
+                <div id='logo' style="width:1000;">
                     <p>
                         <a href="/" style="outline:none;text-decoration:none" title="Dejavu">
                             <span class="g1">D</span>
@@ -129,11 +129,10 @@ $def with()
                 </div>
             </div>
             <div align="center">
-                <form action="/i" method="post" enctype="multipart/form-data" id="myForm"  style="width:78%;font-family:Sans-Serif;font-size:15">
-                    <input type="text" id="txt"  name="search_content"/>
-
-                    <input type="submit" id="sub" value="搜索"/>
-                    <input type="file" name="myfile" value="上传" />
+                <form action="/i" method="post" enctype="multipart/form-data" id="myForm"  style="width:1000;font-family:Sans-Serif;font-size:15">
+                    <input type="text" id="txt"  name="search_content" style="margin-left:130px;padding-left:10px;width:640px"/>
+                    <input type="submit" id="sub" value="搜索" style="margin-left:-6px;padding-left:10px;width:100px"/>
+	    <input type="file" name="myfile" value="上传" style="width:100px"/>
                 </form>
 
             </div>
