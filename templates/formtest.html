@@ -10,11 +10,11 @@
     p .l{font-size:80px;color:#03a25d; z-index: 1;}
     p .e{color:#d64632; z-index: 1;}
     input{outline:none}
-    #txt{margin-left:30;padding-left:10px;width:64%;height:50;font-size:21;border:1px solid #cccccc}
-    #txt:hover{border:1px solid #999;z-index: 1;opacity: 0.5;}
+    #txt{margin-left:130px;padding-left:10px;width:640px;height:50;font-size:21;border:1px solid #cccccc}
+    #txt:hover{border:1px solid #999;z-index: 1;}
     #txt:focus{border:1px solid #3388ff;}
-    #sub{margin-left:-6;width:13%;height:50;color:white;font-size:21;border:1px solid #3388ff;background:#3388ff;}
-    #sub:hover{border:1px solid #3388ff;background:#317ef3;z-index: 1;opacity: 0.5;}
+    #sub{margin-left:-6px;padding-left:10px;width:100px;height:50;color:white;font-size:21;border:1px solid #3388ff;background:#3388ff;}
+    #sub:hover{border:1px solid #3388ff;background:#317ef3;z-index: 1;}
     #sub:active{border:1px solid #317ef3;background:#317ef3;}
 </style>
 <style>
@@ -98,21 +98,19 @@
     }
 </style>
 
-<style>
-
-</style>
-
 <script src="./static/js/TweenLite.min.js"></script>
 
 <main id="main" data-page-id="home">
-    <div class="canvas-wrap">
-        <canvas id="canvas"></canvas>
-        <div class="shadow-left"></div>
-        <div class="shadow-right"></div>
-        <div class="shadow-bottom"></div>
-        <div class="shadow-top"></div>
+    <div>
+        <div class="canvas-wrap" style="position:absolute;z-index:-10;">
+            <canvas id="canvas"></canvas>
+            <div class="shadow-left"></div>
+            <div class="shadow-right"></div>
+            <div class="shadow-bottom"></div>
+            <div class="shadow-top"></div>
+        </div>
 
-        <div style="height: 70%;left: 100px;margin-top:300px;">
+        <div style="height: 70%;left: 100px;margin-top:300px;z-index:10">
             <div align="center">
                 <div id='logo' style="width:1000;">
                     <p>
@@ -130,11 +128,10 @@
             </div>
             <div align="center">
                 <form action="/i" method="post" enctype="multipart/form-data" id="myForm"  style="width:1000;font-family:Sans-Serif;font-size:15">
-                    <input type="text" id="txt"  name="search_content" style="margin-left:130px;padding-left:10px;width:640px"/>
-                    <input type="submit" id="sub" value="搜索" style="margin-left:-6px;padding-left:10px;width:100px"/>
-	    <input type="file" name="myfile" value="上传" style="width:100px"/>
+                    <input type="text" id="txt"  name="search_content" />
+                    <input type="submit" id="sub" value="搜索" />
+	                <input type="file" name="myfile" value="上传" style="width:100px"/>
                 </form>
-
             </div>
         </div>
     </div>
